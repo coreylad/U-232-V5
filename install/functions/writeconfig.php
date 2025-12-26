@@ -66,6 +66,11 @@ $foo = array(
             'input' => 'config[xbt_tracker]',
             'info' => 'Check if yes.'
         ) ,
+        array(
+            'text' => 'Auto Install XBT',
+            'input' => 'config[auto_install_xbt]',
+            'info' => 'Attempt to install and configure XBT automatically.'
+        ) ,
     ) ,
     'Cookies' => array(
         array(
@@ -128,14 +133,46 @@ function createblock($fo, $foo)
 	<fieldset>
 		<legend>'.$fo.'</legend>
 		<table align="center">';
-    foreach ($foo as $bo) {$out.= '<tr>
+    $defaults = array();
+    $host = isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost');
+    $scheme = (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] === true) ? 'https' : 'http';
+    $baseurl = $scheme.'://'.$host;
+    $cookie_domain = (strpos($host, ':') !== false) ? explode(':', $host)[0] : $host;
+    $cookie_domain = '.' . $cookie_domain;
+    $defaults['config[mysql_host]'] = 'localhost';
+    $defaults['config[mysql_user]'] = '';
+    $defaults['config[mysql_pass]'] = '';
+    $defaults['config[mysql_db]'] = 'u232';
+    $defaults['config[cookie_prefix]'] = 'u232_';
+    $defaults['config[cookie_path]'] = '/';
+    $defaults['config[cookie_domain]'] = $cookie_domain;
+    $defaults['config[domain]'] = $host;
+    $defaults['config[announce_urls]'] = $baseurl.'/announce.php';
+    $defaults['config[announce_https]'] = 'https://'.$host.'/announce.php';
+    $defaults['config[site_email]'] = 'admin@'.$host;
+    $defaults['config[site_name]'] = 'U-232';
+    $defaults['announce[mysql_host]'] = 'localhost';
+    $defaults['announce[mysql_user]'] = '';
+    $defaults['announce[mysql_pass]'] = '';
+    $defaults['announce[mysql_db]'] = 'u232';
+    $defaults['announce[baseurl]'] = $baseurl;
+    foreach ($foo as $bo) {
+        $out.= '<tr>
                 <td class="input_text">'.$bo['text'].'</td>';
-                if(strpos($bo['input'], 'pass') == true) {$type = 'password';}
-                elseif ($bo['input'] == 'config[xbt_tracker]') {$type = 'checkbox" value="yes" checked="checked';}
-                else {$type = 'text';}
-                $out.= '<td class="input_input"><input type="'.$type.'" name="'.$bo['input'].'" size="30"/></td>
-                <td class="input_info">'.$bo['info'].'</td>
-              </tr>';}
+                $type = 'text';
+                $extra = '';
+                if(strpos($bo['input'], 'pass') !== false) { $type = 'password'; }
+                elseif ($bo['input'] == 'config[xbt_tracker]') { $type = 'checkbox'; $extra = ' value="yes" checked="checked"'; }
+                elseif ($bo['input'] == 'config[auto_install_xbt]') { $type = 'checkbox'; $extra = ' value="yes"'; }
+                $value = isset($defaults[$bo['input']]) ? $defaults[$bo['input']] : '';
+                if ($type === 'text' || $type === 'password') {
+                    $out.= '<td class="input_input"><input type="'.$type.'" name="'.$bo['input'].'" size="30" value="'.htmlspecialchars($value, ENT_QUOTES).'"/></td>';
+                } else {
+                    $out.= '<td class="input_input"><input type="'.$type.'" name="'.$bo['input'].'"'.$extra.'/></td>';
+                }
+                $out.= '<td class="input_info">'.$bo['info'].'</td>
+              </tr>';
+    }
     $out.= '</table></fieldset>';
     return $out;
 }
@@ -186,6 +223,11 @@ function saveconfig()
             $continue = false;
         }
     } else $out.= '<div class="readable">Announce file was already written</div>';
+    // Optional: auto install XBT tracker
+    if ($continue && isset($_POST['config']['auto_install_xbt']) && $_POST['config']['auto_install_xbt'] === 'yes') {
+        require_once ('functions/xbt_install.php');
+        $out .= xbt_install($root);
+    }
     if ($continue) {
         if(isset($_POST['config']['xbt_tracker'])) {
             $xbt = 1;

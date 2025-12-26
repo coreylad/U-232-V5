@@ -179,7 +179,7 @@ if (empty($mode)) {
     $mysql_user = $INSTALLER09['mysql_user'];
     $mysql_pass = $INSTALLER09['mysql_pass'];
     $mysql_db = $INSTALLER09['mysql_db'];
-    $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . ".sql";
+    $ext = 'u232_custom-' . $mysql_db . '-' . date('Y-m-d_H-i-s_D') . ".sql";
     $filepath = $backupdir . '/' . $ext;
     exec("$mysqldump_path --default-character-set=latin1 -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
     if ($use_gzip) exec($gzip_path . ' ' . $filepath);

@@ -39,10 +39,11 @@ else {
     file_put_contents($file, serialize(array('data' => $value, 'time' => $expires)));
 }*/
 
-if (!extension_loaded('memcached')) {
-    die('Memcached Extension not loaded.');
+if (!extension_loaded('redis')) {
+    die('Redis Extension not loaded.');
 }
-class CACHE extends Memcached {
+class CACHE {
+    private $redis;
     public $CacheHits = array();
     public $MemcacheDBArray = array();
     public $MemcacheDBKey = '';
@@ -53,35 +54,49 @@ class CACHE extends Memcached {
     protected $Part = 0;
     public static $connected = false;
     private static $link = NULL;
+    
     public function __construct() {
-        parent::__construct();
-        $this->addserver('127.0.0.1', 11211);
+        $this->redis = new Redis();
+        $this->redis->connect('127.0.0.1', 6379);
+        // Optional: set password if Redis requires authentication
+        // $this->redis->auth('your_redis_password');
     }
     //---------- Caching functions ----------//
-    // Wrapper for Memcache::set, with the zlib option removed and default duration of 1 hour
+    // Wrapper for Redis::set, with default duration of 30 days
     public function cache_value($Key, $Value, $Duration = 2592000) {
         $StartTime = microtime(true);
-        if ($Duration != 0) {
-            $Duration += time();
-        }
-
+        
         if (empty($Key)) {
             trigger_error("Cache insert failed for empty key");
         }
-        if (!$this->set($Key, $Value, $Duration)) {
-            trigger_error("Cache insert failed for key $Key -- " . $this->getResultCode(), E_USER_ERROR);
+        
+        $serialized = serialize($Value);
+        if ($Duration == 0) {
+            $result = $this->redis->set($Key, $serialized);
+        } else {
+            $result = $this->redis->setex($Key, $Duration, $serialized);
+        }
+        
+        if (!$result) {
+            trigger_error("Cache insert failed for key $Key", E_USER_ERROR);
         }
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
     public function add_value($Key, $Value, $Duration = 2592000) {
         $StartTime = microtime(true);
-        if ($Duration != 0) {
-            $Duration += time();
-        }
+        
         if (empty($Key)) {
             trigger_error("Cache insert failed for empty key");
         }
-        $add = $this->add($Key, $Value, $Duration);
+        
+        // Redis setnx (set if not exists)
+        $serialized = serialize($Value);
+        $add = $this->redis->setnx($Key, $serialized);
+        
+        if ($add && $Duration > 0) {
+            $this->redis->expire($Key, $Duration);
+        }
+        
         $this->Time += (microtime(true) - $StartTime) * 1000;
         return $add;
     }
@@ -90,31 +105,62 @@ class CACHE extends Memcached {
         if (empty($Key)) {
             trigger_error("Cache retrieval failed for empty key");
         }
-        $Return = $this->get($Key);
+        $value = $this->redis->get($Key);
+        $Return = ($value !== false) ? unserialize($value) : false;
         $this->Time += (microtime(true) - $StartTime) * 1000;
         return $Return;
     }
     public function replace_value($Key, $Value, $Duration = 2592000) {
         $StartTime = microtime(true);
-        if ($Duration != 0) {
-            $Duration += time();
+        
+        // Only replace if key exists
+        if ($this->redis->exists($Key)) {
+            $serialized = serialize($Value);
+            if ($Duration == 0) {
+                $this->redis->set($Key, $serialized);
+            } else {
+                $this->redis->setex($Key, $Duration, $serialized);
+            }
         }
-        $this->replace($Key, $Value, false, $Duration);
+        
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
-    // Wrapper for Memcache::delete. For a reason, see above.
+    // Wrapper for Redis::del
     public function delete_value($Key) {
         $StartTime = microtime(true);
         if (empty($Key)) {
             trigger_error("Cache retrieval failed for empty key");
         }
-        if (!$this->delete($Key, 0)) {
-        }
+        $this->redis->del($Key);
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
-    //---------- memcachedb functions ----------//
+    // Return cache stats compatible with legacy Memcached expectations
+    public function getStats() {
+        $info = $this->redis->info();
+        $hits = isset($info['keyspace_hits']) ? (int)$info['keyspace_hits'] : 0;
+        $misses = isset($info['keyspace_misses']) ? (int)$info['keyspace_misses'] : 0;
+        $cmd_get = $hits + $misses;
+        $keys = 0;
+        // Prefer db size for current items
+        try {
+            $keys = $this->redis->dbSize();
+        } catch (Throwable $e) {
+            $keys = 0;
+        }
+        $stats = array(
+            'cmd_get' => $cmd_get,
+            'get_hits' => $hits,
+            'curr_items' => $keys,
+        );
+        // Provide both memcache-style server keys to preserve template access
+        return array(
+            '127.0.0.1:11211' => $stats,
+            '127.0.0.1:6379' => $stats,
+        );
+    }
+    //---------- Redis cache transaction functions ----------//
     public function begin_transaction($Key) {
-        $Value = $this->get($Key);
+        $Value = $this->get_value($Key);
         if (!is_array($Value)) {
             $this->InTransaction = false;
             $this->MemcacheDBKey = array();
@@ -134,9 +180,6 @@ class CACHE extends Memcached {
     public function commit_transaction($Time = 2592000) {
         if (!$this->InTransaction) {
             return false;
-        }
-        if ($Time != 0) {
-            $Time += time();
         }
         $this->cache_value($this->MemcacheDBKey, $this->MemcacheDBArray, $Time);
         $this->InTransaction = false;
@@ -198,45 +241,43 @@ class CACHE extends Memcached {
             $this->MemcacheDBArray[$Row] = $UpdateArray;
         }
     }
-    public static function clean() {
-        if (!self::$this) {
-            trigger_error('Not connected to Memcache server in ' . __METHOD__, E_USER_WARNING);
-            return false;
-        }
-        self::$count++;
-        $time = microtime(true);
-        $clean = self::$link->flush();
-        self::$time += (microtime(true) - $time);
-        self::set_error(__METHOD__);
-        return $clean;
+    //---------- Redis cache flushing ----------//
+    public function flush_all() {
+        /**
+         * Flush all data from the current Redis database
+         * Used for development mode to force cache refresh
+         */
+        return $this->redis->flushDB();
     }
-    public static function inc($key, $howmuch = 1) {
-        if (!self::$this) {
-            trigger_error('Not connected to Memcache server in ' . __METHOD__ . ' KEY = "' . $key . '"', E_USER_WARNING);
-            return false;
+    public function flush_keys_pattern($pattern = '*') {
+        /**
+         * Delete all keys matching a pattern
+         * Example: flush_keys_pattern('user*') - deletes all user-related cache
+         */
+        $keys = $this->redis->keys($pattern);
+        if (!empty($keys)) {
+            return $this->redis->delete($keys);
         }
-
-        self::$count++;
-        $time = microtime(true);
-        $inc = self::$link->increment($key, $howmuch);
-        self::$time += (microtime(true) - $time);
-
-        self::set_error(__METHOD__, $key);
-        return $inc;
+        return 0;
     }
-    public static function dec($key, $howmuch = 1) {
-        if (!self::$this) {
-            trigger_error('Not connected to Memcache server in ' . __METHOD__ . ' KEY = "' . $key . '"', E_USER_WARNING);
-            return false;
+    //---------- Redis native stats ----------//
+    public function stats() {
+        $info = $this->redis->info();
+        $hits = isset($info['keyspace_hits']) ? (int)$info['keyspace_hits'] : 0;
+        $misses = isset($info['keyspace_misses']) ? (int)$info['keyspace_misses'] : 0;
+        $cmd_get = $hits + $misses;
+        $keys = 0;
+        try {
+            $keys = $this->redis->dbSize();
+        } catch (Throwable $e) {
+            $keys = 0;
         }
-
-        self::$count++;
-        $time = microtime(true);
-        $dec = self::$link->decrement($key, $howmuch);
-        self::$time += (microtime(true) - $time);
-
-        self::set_error(__METHOD__, $key);
-        return $dec;
-}
+        return array(
+            'cmd_get' => $cmd_get,
+            'hits' => $hits,
+            'misses' => $misses,
+            'curr_items' => $keys,
+        );
+    }
 }//end class
 ?>

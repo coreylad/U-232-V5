@@ -13,6 +13,18 @@
     ErrorDocument 404 /index.php
 </IfModule>
 
+# DEVELOPMENT MODE - Disable aggressive caching for dynamic updates
+<IfModule mod_headers.c>
+    # Disable browser caching for all files
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, public"
+    Header set Pragma "no-cache"
+    Header set Expires "-1"
+    
+    # Force templates and assets to always revalidate
+    Header set Last-Modified "Thu, 01 Jan 1970 00:00:01 GMT"
+    Header set ETag ""
+</IfModule>
+
 # BEGIN Expire headers
 ##<ifModule mod_expires.c>
 ##  ExpiresActive On

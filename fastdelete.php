@@ -18,7 +18,7 @@
  */
 require_once(__DIR__.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php');
 require_once(INCL_DIR.'user_functions.php');
-require_once(INCL_DIR . 'function_memcache.php');
+require_once(INCL_DIR . 'function_cache.php');
 dbconn(false);
 loggedinorreturn();
 /*

@@ -23,7 +23,8 @@ if ($INSTALLER09['error_reports']['debugmode'] == 1) {
 }else { 
     error_reporting(0); 
 }
-const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0';
+// Minimum PHP version requirement
+const REQUIRED_PHP = 80200, REQUIRED_PHP_VERSION = '8.2';
 if (PHP_VERSION_ID < REQUIRED_PHP)
 die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
 if (PHP_INT_SIZE < 8)
@@ -64,37 +65,37 @@ $INSTALLER09['cookie_prefix'] = '#cookie_prefix'; // This allows you to have mul
 $INSTALLER09['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
 $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $INSTALLER09['domain'] = '#domain';
-//== Memcache expires
+//== Redis expires - DEVELOPMENT MODE (relaxed caching for dynamic updates)
 $INSTALLER09['expires']['latestuser'] = 0; // 0 = infinite
-$INSTALLER09['expires']['MyPeers_'] = 120; // 60 = 60 seconds
-$INSTALLER09['expires']['unread'] = 86400; // 86400 = 1 day
+$INSTALLER09['expires']['MyPeers_'] = 30; // 30 = 30 seconds (reduced from 120)
+$INSTALLER09['expires']['unread'] = 300; // 300 = 5 min (reduced from 1 day)
 $INSTALLER09['expires']['alerts'] = 0; // 0 = infinite
 $INSTALLER09['expires']['searchcloud'] = 0; // 0 = infinite
-$INSTALLER09['expires']['user_cache'] = 30 * 86400; // 30 days
-$INSTALLER09['expires']['curuser'] = 30 * 86400; // 30 days
-$INSTALLER09['expires']['u_status'] = 30 * 84600; // 30x86400 = 30 days
-$INSTALLER09['expires']['u_stats'] = 300; // 300 = 5 min
+$INSTALLER09['expires']['user_cache'] = 60; // 60 seconds (reduced from 30 days!)
+$INSTALLER09['expires']['curuser'] = 60; // 60 seconds (reduced from 30 days!)
+$INSTALLER09['expires']['u_status'] = 60; // 60 seconds (reduced from 30 days)
+$INSTALLER09['expires']['u_stats'] = 60; // 60 seconds (reduced from 5 min)
 $INSTALLER09['expires']['u_stats_xbt'] = 30; // 30 seconds
-$INSTALLER09['expires']['user_status'] = 30 * 84600; // 30x86400 = 30 days
-$INSTALLER09['expires']['user_stats'] = 300; // 300 = 5 min
+$INSTALLER09['expires']['user_status'] = 60; // 60 seconds (reduced from 30 days)
+$INSTALLER09['expires']['user_stats'] = 60; // 60 seconds (reduced from 5 min)
 $INSTALLER09['expires']['user_stats_xbt'] = 30; // 30 seconds
-$INSTALLER09['expires']['MyPeers_xbt_'] = 30;
-$INSTALLER09['expires']['announcement'] = 600; // 600 = 10 min
-$INSTALLER09['expires']['shoutbox'] = 86400; // 86400 = 1 day
-$INSTALLER09['expires']['staff_shoutbox'] = 86400; // 86400 = 1 day
+$INSTALLER09['expires']['MyPeers_xbt_'] = 30; // 30 seconds
+$INSTALLER09['expires']['announcement'] = 30; // 30 seconds (reduced from 10 min)
+$INSTALLER09['expires']['shoutbox'] = 300; // 300 = 5 min (reduced from 1 day)
+$INSTALLER09['expires']['staff_shoutbox'] = 300; // 300 = 5 min (reduced from 1 day)
 $INSTALLER09['expires']['forum_posts'] = 0;
-$INSTALLER09['expires']['torrent_comments'] = 900; // 900 = 15 min
-$INSTALLER09['expires']['latestposts'] = 0; // 900 = 15 min
-$INSTALLER09['expires']['top5_torrents'] = 0; // 0 = infinite
-$INSTALLER09['expires']['last5_torrents'] = 0; // 0 = infinite
-$INSTALLER09['expires']['scroll_torrents'] = 0; // 0 = infinite
-$INSTALLER09['expires']['torrent_details'] = 30 * 86400; // = 30 days
-$INSTALLER09['expires']['torrent_details_text'] = 30 * 86400; // = 30 days
-$INSTALLER09['expires']['insertJumpTo'] = 30 * 86400; // = 30 days
-$INSTALLER09['expires']['get_all_boxes'] = 30 * 86400; // = 30 days
+$INSTALLER09['expires']['torrent_comments'] = 60; // 60 seconds (reduced from 15 min)
+$INSTALLER09['expires']['latestposts'] = 0; // 0 = infinite
+$INSTALLER09['expires']['top5_torrents'] = 0; // 0 = infinite (no cache)
+$INSTALLER09['expires']['last5_torrents'] = 0; // 0 = infinite (no cache)
+$INSTALLER09['expires']['scroll_torrents'] = 0; // 0 = infinite (no cache)
+$INSTALLER09['expires']['torrent_details'] = 300; // 5 min (reduced from 30 days)
+$INSTALLER09['expires']['torrent_details_text'] = 300; // 5 min (reduced from 30 days)
+$INSTALLER09['expires']['insertJumpTo'] = 300; // 5 min (reduced from 30 days)
+$INSTALLER09['expires']['get_all_boxes'] = 300; // 5 min (reduced from 30 days)
 $INSTALLER09['expires']['thumbsup'] = 0; // 0 = infinite
-$INSTALLER09['expires']['iphistory'] = 900; // 900 = 15 min
-$INSTALLER09['expires']['newpoll'] = 0; // 900 = 15 min
+$INSTALLER09['expires']['iphistory'] = 60; // 60 seconds (reduced from 15 min)
+$INSTALLER09['expires']['newpoll'] = 0; // 0 = infinite
 $INSTALLER09['expires']['genrelist'] = 30 * 86400; // 30x86400 = 30 days
 $INSTALLER09['expires']['genrelist2'] = 30 * 86400; // 30x86400 = 30 days
 $INSTALLER09['expires']['poll_data'] = 900; // 300 = 5 min

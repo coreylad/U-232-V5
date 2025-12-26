@@ -1,0 +1,545 @@
+/**
+ * CYBERPUNK ENHANCEMENTS - Additional Styling
+ * Complements the main cyberpunk.css with extra effects
+ */
+
+/* ==================== ENHANCED NEON BORDERS ==================== */
+.neon-border-cyan {
+    border: 2px solid #00f3ff;
+    box-shadow: 
+        0 0 5px #00f3ff,
+        inset 0 0 5px #00f3ff,
+        0 0 10px #00f3ff,
+        inset 0 0 10px #00f3ff;
+    animation: neonBorderPulse 1.5s ease-in-out infinite;
+}
+
+.neon-border-magenta {
+    border: 2px solid #ff00ff;
+    box-shadow: 
+        0 0 5px #ff00ff,
+        inset 0 0 5px #ff00ff,
+        0 0 10px #ff00ff,
+        inset 0 0 10px #ff00ff;
+    animation: neonBorderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes neonBorderPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 5px currentColor,
+            inset 0 0 5px currentColor;
+    }
+    50% {
+        box-shadow: 
+            0 0 10px currentColor,
+            inset 0 0 10px currentColor,
+            0 0 20px currentColor,
+            inset 0 0 20px currentColor;
+    }
+}
+
+/* ==================== HOLOGRAPHIC EFFECTS ==================== */
+.holographic {
+    background: linear-gradient(
+        45deg,
+        #00f3ff 0%,
+        #ff00ff 25%,
+        #00f3ff 50%,
+        #ff00ff 75%,
+        #00f3ff 100%
+    );
+    background-size: 300% 300%;
+    animation: holographicShift 3s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes holographicShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ==================== GLITCH EFFECTS ==================== */
+.glitch {
+    position: relative;
+    animation: glitchAnim 3s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00ff;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitchAnim1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #00f3ff;
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitchAnim2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitchAnim {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitchAnim1 {
+    0% { clip: rect(24px, 9999px, 90px, 0); }
+    25% { clip: rect(45px, 9999px, 120px, 0); }
+    50% { clip: rect(12px, 9999px, 65px, 0); }
+    75% { clip: rect(78px, 9999px, 140px, 0); }
+    100% { clip: rect(34px, 9999px, 95px, 0); }
+}
+
+@keyframes glitchAnim2 {
+    0% { clip: rect(85px, 9999px, 140px, 0); }
+    25% { clip: rect(34px, 9999px, 95px, 0); }
+    50% { clip: rect(67px, 9999px, 125px, 0); }
+    75% { clip: rect(15px, 9999px, 78px, 0); }
+    100% { clip: rect(92px, 9999px, 145px, 0); }
+}
+
+/* ==================== NEON TEXT EFFECTS ==================== */
+.neon-text-cyan {
+    color: #00f3ff;
+    text-shadow:
+        0 0 7px #00f3ff,
+        0 0 10px #00f3ff,
+        0 0 21px #00f3ff,
+        0 0 42px #00f3ff,
+        0 0 82px #00f3ff;
+}
+
+.neon-text-magenta {
+    color: #ff00ff;
+    text-shadow:
+        0 0 7px #ff00ff,
+        0 0 10px #ff00ff,
+        0 0 21px #ff00ff,
+        0 0 42px #ff00ff,
+        0 0 82px #ff00ff;
+}
+
+.neon-text-green {
+    color: #39ff14;
+    text-shadow:
+        0 0 7px #39ff14,
+        0 0 10px #39ff14,
+        0 0 21px #39ff14,
+        0 0 42px #39ff14;
+}
+
+/* ==================== SCAN LINES OVERLAY ==================== */
+.scanlines {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanlines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(0, 243, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+    animation: scanlineMove 4s linear infinite;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+@keyframes scanlineMove {
+    0% { top: 0%; }
+    100% { top: 100%; }
+}
+
+/* ==================== DATA STREAM BACKGROUND ==================== */
+.data-stream {
+    position: relative;
+    overflow: hidden;
+}
+
+.data-stream::before {
+    content: '01010101 10101010 11001100 00110011 01110111 10001000';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    color: rgba(0, 243, 255, 0.1);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: dataStreamFlow 10s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes dataStreamFlow {
+    0% { top: -100%; }
+    100% { top: 100%; }
+}
+
+/* ==================== CIRCUIT BOARD PATTERN ==================== */
+.circuit-board {
+    background-image:
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: relative;
+}
+
+.circuit-board::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #00f3ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f3ff;
+    top: 10px;
+    left: 10px;
+    animation: circuitPulse 2s ease-in-out infinite;
+}
+
+@keyframes circuitPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px #00f3ff;
+        opacity: 0.5;
+    }
+    50% {
+        box-shadow: 0 0 20px #00f3ff;
+        opacity: 1;
+    }
+}
+
+/* ==================== ENERGY BARS ==================== */
+.energy-bar {
+    width: 100%;
+    height: 30px;
+    background: rgba(10, 10, 15, 0.8);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.energy-fill {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #00f3ff 0%, 
+        #39ff14 50%, 
+        #ffea00 100%
+    );
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
+    transition: width 0.5s ease;
+}
+
+.energy-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent
+    );
+    animation: energyShine 2s linear infinite;
+}
+
+@keyframes energyShine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* ==================== HEX GRID PATTERN ==================== */
+.hex-grid {
+    background-image: 
+        linear-gradient(30deg, rgba(0, 243, 255, 0.05) 12%, transparent 12.5%, transparent 87%, rgba(0, 243, 255, 0.05) 87.5%, rgba(0, 243, 255, 0.05)),
+        linear-gradient(150deg, rgba(0, 243, 255, 0.05) 12%, transparent 12.5%, transparent 87%, rgba(0, 243, 255, 0.05) 87.5%, rgba(0, 243, 255, 0.05)),
+        linear-gradient(30deg, rgba(0, 243, 255, 0.05) 12%, transparent 12.5%, transparent 87%, rgba(0, 243, 255, 0.05) 87.5%, rgba(0, 243, 255, 0.05)),
+        linear-gradient(150deg, rgba(0, 243, 255, 0.05) 12%, transparent 12.5%, transparent 87%, rgba(0, 243, 255, 0.05) 87.5%, rgba(0, 243, 255, 0.05));
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+}
+
+/* ==================== FLOATING PARTICLES ==================== */
+.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #00f3ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f3ff;
+    animation: particleFloat 15s linear infinite;
+}
+
+.particle:nth-child(2) { 
+    left: 20%; 
+    animation-delay: -2s;
+    background: #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.particle:nth-child(3) { 
+    left: 40%; 
+    animation-delay: -4s;
+    background: #39ff14;
+    box-shadow: 0 0 10px #39ff14;
+}
+
+.particle:nth-child(4) { 
+    left: 60%; 
+    animation-delay: -6s;
+}
+
+.particle:nth-child(5) { 
+    left: 80%; 
+    animation-delay: -8s;
+    background: #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* ==================== CYBERPUNK CARDS ==================== */
+.cyber-card {
+    background: linear-gradient(135deg, rgba(10, 10, 15, 0.9) 0%, rgba(26, 10, 46, 0.9) 100%);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cyber-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.cyber-card:hover {
+    transform: translateY(-5px);
+    border-color: #00f3ff;
+    box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);
+}
+
+.cyber-card:hover::before {
+    transform: translate(-25%, -25%) scale(1.2);
+}
+
+.cyber-card-header {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #00f3ff;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+}
+
+/* ==================== NEON DIVIDER ==================== */
+.neon-divider {
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #00f3ff 20%, 
+        #ff00ff 50%, 
+        #00f3ff 80%, 
+        transparent 100%
+    );
+    margin: 30px 0;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+    animation: dividerGlow 3s ease-in-out infinite;
+}
+
+@keyframes dividerGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 243, 255, 1);
+    }
+}
+
+/* ==================== CYBER BUTTON VARIANTS ==================== */
+.btn-cyber-primary {
+    background: linear-gradient(135deg, #00f3ff 0%, #0080ff 100%);
+    border: none;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+.btn-cyber-primary:hover {
+    box-shadow: 0 0 40px rgba(0, 243, 255, 1);
+    transform: translateY(-3px);
+}
+
+.btn-cyber-danger {
+    background: linear-gradient(135deg, #ff006e 0%, #ff0000 100%);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+}
+
+.btn-cyber-danger:hover {
+    box-shadow: 0 0 40px rgba(255, 0, 110, 1);
+}
+
+.btn-cyber-success {
+    background: linear-gradient(135deg, #39ff14 0%, #00ff00 100%);
+    border: none;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
+}
+
+.btn-cyber-success:hover {
+    box-shadow: 0 0 40px rgba(57, 255, 20, 1);
+}
+
+/* ==================== DIGITAL CLOCK DISPLAY ==================== */
+.digital-display {
+    background: #000;
+    border: 3px solid #00f3ff;
+    border-radius: 10px;
+    padding: 15px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 2em;
+    color: #00f3ff;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 1);
+    box-shadow: 
+        inset 0 0 20px rgba(0, 243, 255, 0.3),
+        0 0 30px rgba(0, 243, 255, 0.5);
+    letter-spacing: 3px;
+}
+
+/* ==================== RESPONSIVE ENHANCEMENTS ==================== */
+@media (max-width: 768px) {
+    .cyber-card {
+        padding: 15px;
+    }
+    
+    .cyber-card-header {
+        font-size: 1.2em;
+    }
+    
+    .digital-display {
+        font-size: 1.5em;
+        padding: 10px 20px;
+    }
+    
+    .neon-divider {
+        margin: 20px 0;
+    }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+.reduced-motion {
+    animation: none !important;
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+    body::before,
+    body::after,
+    .scanlines::before,
+    .scanlines::after,
+    .particle-container {
+        display: none;
+    }
+    
+    * {
+        background: white !important;
+        color: black !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+}

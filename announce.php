@@ -80,7 +80,27 @@ if ($left < 0) err('invalid left (less than 0)');
 if (!$port || $port > 0xffff) err("invalid port");
 if (!isset($event)) $event = "";
 $seeder = ($left == 0) ? "yes" : "no";
-if (!($db = @($GLOBALS["___mysqli_ston"] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'])) AND $select = @((bool)mysqli_query($db, "USE {$INSTALLER09['mysql_db']}")))) err('Please call back later');
+
+// Modern mysqli connection
+try {
+    $db = mysqli_connect(
+        $INSTALLER09['mysql_host'],
+        $INSTALLER09['mysql_user'],
+        $INSTALLER09['mysql_pass'],
+        $INSTALLER09['mysql_db']
+    );
+    
+    if (!$db) {
+        err('Please call back later');
+    }
+    
+    $GLOBALS["___mysqli_ston"] = $db;
+    mysqli_set_charset($db, 'utf8mb4');
+    
+} catch (Exception $e) {
+    err('Please call back later');
+}
+
 $user = get_user_from_torrent_pass($torrent_pass);
 if (!$user) err('Invalid passkey. Please redownload the torrent from ' . $INSTALLER09['baseurl']);
 $userid = (int)$user["id"];

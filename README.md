@@ -62,7 +62,7 @@ U-232 wants to thank everyone who helped make it what it is today; shaping and d
 
 ### Consulting Developers
 
-Huge thanks to pdq for so much input and improved code and guidance with `memcache`.
+Huge thanks to pdq for so much input and improved code and guidance with caching.
 
 Huge thanks to elephant for the XBT edits.
 		
@@ -97,24 +97,18 @@ Thank you for your efforts which make it possible for people all around the worl
 
 U-232 V5 requires the following :
 
-- Memcached
-- PHP7
-- PHP7-CURL
-- PHP7-IGBINARY
-- PHP7-JSON
-- PHP7-MEMCACHED
-- PHP7-MSGPACK
-- PHP7-MCRYPT
-- PHP7-MYSQL/MYSQLI
-- PHP7-MBSTRING
-- PHP7-GD
-- PHP7-GEOIP
-- PHP7-OPCACHE
-- PHP7-XML
-- PHP7-ZIP
-- LIBAPACHE2-MOD-PHP7
-- Apache/2.4.10
-- Mysql 5.5.50-0
+- Redis
+- PHP 8.2
+- PHP 8.2-CURL
+- PHP 8.2-JSON
+- PHP 8.2-MYSQL/MYSQLI
+- PHP 8.2-MBSTRING
+- PHP 8.2-GD
+- PHP 8.2-OPCACHE
+- PHP 8.2-XML
+- PHP 8.2-ZIP
+- Apache/2.4+
+- MySQL 5.7+ or MariaDB 10.3+
 
 
 ### Set Up Instructions:
@@ -190,7 +184,7 @@ A error on install is a failure to adhere to setup instructions.
 
 If you experience a failure then a properly configured server will report that issue, no excuses required.
 
-Install `memcached` and zend `opcode` cache before installing U-232 V5.
+Install Redis and OPcache before installing U-232 V5.
 
 1. Create a directory one up from root so it resides beside it not inside it, named bucket.
 	1. Then inside the bucket folder make another and name it avatar, remember to chmod them to 777

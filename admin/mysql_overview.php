@@ -37,8 +37,8 @@ $lang = array_merge($lang, load_language('ad_mysql_overview'));
 //Do we wanna continue here, or skip to just the overview?
 if (isset($_GET['Do']) && isset($_GET['table'])) {
     $Do = ($_GET['Do'] === "T") ? sqlesc($_GET['Do']) : ""; //for later use!
-    //Make sure the GET only has alpha letters and nothing else
-    if (!ereg('[^A-Za-z_]+', $_GET['table'])) {
+    //Make sure the GET only has alpha letters and underscores and nothing else
+    if (!preg_match('/[^A-Za-z_]+/', $_GET['table'])) {
         $Table = '`' . $_GET['table'] . '`'; //add backquotes to GET or we is doomed!
         
     } else {
@@ -47,7 +47,7 @@ if (isset($_GET['Do']) && isset($_GET['table'])) {
     }
     $sql = "OPTIMIZE TABLE $Table";
     //preg match the sql incase it was hijacked somewhere!(will use CHECK|ANALYZE|REPAIR|later
-    if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
+    if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . preg_quote($Table, '@') . '$@i', $sql)) {
         //all good? Do it!
         @sql_query($sql) or sqlerr(__FILE__, __LINE__);
         header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview&Do=F");

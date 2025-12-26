@@ -40,15 +40,15 @@ function docleanup($data)
     $mysql_pass = $INSTALLER09['mysql_pass'];
     $mysql_db = $INSTALLER09['mysql_db'];
     $bdir = $_SERVER["DOCUMENT_ROOT"] . "/include/backup";
-    $c1 = "mysqldump -h " . $mysql_host . " -u " . $mysql_user . " -p" . $mysql_pass . " " . $mysql_db . " -d > " . $bdir . "/db_structure.sql";
-    $c = "mysqldump -h " . $mysql_host . " -u " . $mysql_user . " -p" . $mysql_pass . " " . $mysql_db . " " . tables("peers|messages|sitelog") . " | bzip2 -cq9 > " . $bdir . "/db_" . date("m_d_y", TIME_NOW) . ".sql.bz2";
+    $c1 = "mysqldump -h " . $mysql_host . " -u " . $mysql_user . " -p" . $mysql_pass . " " . $mysql_db . " -d > " . $bdir . "/u232_custom-db_structure.sql";
+    $c = "mysqldump -h " . $mysql_host . " -u " . $mysql_user . " -p" . $mysql_pass . " " . $mysql_db . " " . tables("peers|messages|sitelog") . " | bzip2 -cq9 > " . $bdir . "/u232_custom-db_" . date("Y-m-d", TIME_NOW) . ".sql.bz2";
     system($c1);
     system($c);
-    $files = glob($bdir . "/db_*");
+    $files = glob($bdir . "/u232_custom-db_*");
     foreach ($files as $file) {
         if ((TIME_NOW - filemtime($file)) > 3 * 86400) unlink($file);
     }
-    $ext = "db_" . date("m_d_y", TIME_NOW) . ".sql.bz2";
+    $ext = "u232_custom-db_" . date("Y-m-d", TIME_NOW) . ".sql.bz2";
     sql_query("INSERT INTO dbbackup (name, added, userid) VALUES (" . sqlesc($ext) . ", " . TIME_NOW . ", " . $INSTALLER09['site']['owner'] . ")") or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) write_log("Auto-dbbackup----------------------Auto Back Up Complete using $queries queries---------------------");
     if (false !== mysqli_affected_rows($GLOBALS["___mysqli_ston"])) {

@@ -28,12 +28,19 @@ function get_parked()
     global $CURUSER;
     return $CURUSER['parked_until'];
 }
-function autoshout($msg)
+function autoshout(string $msg): void
 {
     global $INSTALLER09, $mc1;
     require_once (INCL_DIR . 'bbcode_functions.php');
-    sql_query('INSERT INTO shoutbox(userid,date,text,text_parsed,autoshout)VALUES (' . $INSTALLER09['bot_id'] . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc(format_comment($msg)) . ', "yes")');
-    $mc1->delete_value('auto_shoutbox_');
+    
+    try {
+        sql_query('INSERT INTO shoutbox(userid,date,text,text_parsed,autoshout)VALUES (' . 
+                  $INSTALLER09['bot_id'] . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . 
+                  sqlesc(format_comment($msg)) . ', "yes")');
+        $mc1->delete_value('auto_shoutbox_');
+    } catch (Exception $e) {
+        error_log('Failed to autoshout: ' . $e->getMessage());
+    }
 }
 function parked()
 {
@@ -137,25 +144,37 @@ function get_reputation($user, $mode = '', $rep_is_on = TRUE, $post_id = 0)
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
 //== End
-function write_staffs()
+function write_staffs(): void
 {
     global $INSTALLER09;
     //==ids
     $t = '$INSTALLER09';
     $iconfigfile = "<" . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
-    $ri = sql_query("SELECT id, username, class FROM users WHERE class BETWEEN " . UC_STAFF . " AND " . UC_MAX . " ORDER BY id ASC") or sqlerr(__file__, __line__);
-    $iconfigfile.= "" . $t . "['allowed_staff']['id'] = array(";
-    while ($ai = mysqli_fetch_assoc($ri)) {
-        $ids[] = $ai['id'];
-        $usernames[] = "'" . $ai["username"] . "' => 1";
+    
+    try {
+        $ri = sql_query("SELECT id, username, class FROM users WHERE class BETWEEN " . UC_STAFF . " AND " . UC_MAX . " ORDER BY id ASC");
+        $ids = array();
+        $usernames = array();
+        
+        $iconfigfile.= "" . $t . "['allowed_staff']['id'] = array(";
+        while ($ai = mysqli_fetch_assoc($ri)) {
+            $ids[] = $ai['id'];
+            $usernames[] = "'" . $ai["username"] . "' => 1";
+        }
+        $iconfigfile.= "" . join(",", $ids);
+        $iconfigfile.= ");";
+        $iconfigfile.= "\n?" . ">";
+        $file = CACHE_DIR . 'staff_settings.php';
+        if (!is_dir(CACHE_DIR)) {
+            @mkdir(CACHE_DIR, 0775, true);
+        }
+        $written = file_put_contents($file, $iconfigfile, LOCK_EX);
+        if ($written === false) {
+            error_log('Failed to write staff settings to ' . $file . ' (check permissions)');
+        }
+    } catch (Exception $e) {
+        error_log('Failed to write staff settings: ' . $e->getMessage());
     }
-    $iconfigfile.= "" . join(",", $ids);
-    $iconfigfile.= ");";
-    $iconfigfile.= "\n?" . ">";
-    $filenum = fopen('./cache/staff_settings.php', 'w');
-    ftruncate($filenum, 0);
-    fwrite($filenum, $iconfigfile);
-    fclose($filenum);
     //==names
     $t = '$INSTALLER09';
     $nconfigfile = "<" . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
@@ -163,10 +182,14 @@ function write_staffs()
     $nconfigfile.= "" . join(",", $usernames);
     $nconfigfile.= ");";
     $nconfigfile.= "\n?" . ">";
-    $filenum1 = fopen('./cache/staff_settings2.php', 'w');
-    ftruncate($filenum1, 0);
-    fwrite($filenum1, $nconfigfile);
-    fclose($filenum1);
+    $file2 = CACHE_DIR . 'staff_settings2.php';
+    if (!is_dir(CACHE_DIR)) {
+        @mkdir(CACHE_DIR, 0775, true);
+    }
+    $written2 = file_put_contents($file2, $nconfigfile, LOCK_EX);
+    if ($written2 === false) {
+        error_log('Failed to write staff settings2 to ' . $file2 . ' (check permissions)');
+    }
 }
 function get_ratio_color($ratio)
 {
@@ -315,7 +338,7 @@ function format_username($user, $icons = true)
     $str.= "</span>\n";
     return $str;
 }
-function is_valid_id($id)
+function is_valid_id(int $id): bool
 {
     return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
@@ -419,65 +442,69 @@ function get_server_load($windows = 0)
         return round($cpu_stats / 2); // remove /2 for single processor systems
     }
 }
-function get_cache_config_data($the_names,$the_colors,$the_images)
+function get_cache_config_data($the_names, $the_colors, $the_images)
 {
-  $configfile = '';
-  $the_names = str_replace(',',",\n",trim($the_names,','));
-  $the_colors  = str_replace(',',",\n",trim($the_colors,','));
-  $the_images  = str_replace(',',",\n",trim($the_images,','));
-  $configfile .="\n\n\n".'$class_names = array(
-  '.$the_names.'								
+    $configfile = '';
+    $the_names = str_replace(',', ",\n", trim($the_names, ','));
+    $the_colors = str_replace(',', ",\n", trim($the_colors, ','));
+    $the_images = str_replace(',', ",\n", trim($the_images, ','));
+    $configfile .= "\n\n\n" . '$class_names = array(
+  ' . $the_names . '
   );';
-  // adding class colors like in user_functions
-  $configfile .="\n\n\n".'$class_colors = array( 
-  '.$the_colors.'								
+    // adding class colors like in user_functions
+    $configfile .= "\n\n\n" . '$class_colors = array( 
+  ' . $the_colors . '
   );';
-  // adding class pics like in user_functions
-  $configfile .="\n\n\n".'$class_images = array(
-  '.$the_images.'										
-  );'; 
-	return $configfile;
+    // adding class pics like in user_functions
+    $configfile .= "\n\n\n" . '$class_images = array(
+  ' . $the_images . '
+  );';
+    return $configfile;
 }
-    function topicmods($id,$utopics,$read = false) {
-            global $INSTALLER09;
-            $file = $INSTALLER09['cache']."/topicsmods.txt";
-            $topics = file_exists($file) ? unserialize(file_get_contents($file)) : array();
-            if(!$read) {
-                    $topics[$id] = $utopics;
-                    return file_put_contents($file,serialize($topics)) ? true : false;
-            } else {
-            if(array_key_exists($id,$topics)) { 
-               return $topics[(int)$id]; 
-               } else { 
-           return 0; 
-          }
-        }
-    } 
-  function forummods($forced = false)
+
+function topicmods($id, $utopics, $read = false)
 {
-		global $INSTALLER09;
-                $file = $INSTALLER09['cache']."/forummods.txt";
-		if (!file_exists($file) || $forced == true)
-		{
-			$q = sql_query("SELECT id,username,forums_mod FROM users WHERE forum_mod = 'yes'") or sqlerr(__FILE__, __LINE__);
-			while($a = mysqli_fetch_assoc($q))
-				$users[] = $a;
-			$forums = array();
-			foreach($users as $user)
-			{
-				$reg = "([0-9]+)";
-				preg_match_all($reg,$user["forums_mod"],$fids);
-				foreach($fids[0] as $fid)
-				{
-					if(!array_key_exists($fid,$forums))
-						$forums[$fid] = array();
-					$forums[$fid][] = array($user["id"],$user["username"]);
-				}
-			}
-			file_put_contents($file,serialize($forums));
-		}
-		if($forced == false)
-		return  unserialize(file_get_contents($file));
+    global $INSTALLER09;
+    $file = $INSTALLER09['cache'] . '/topicsmods.txt';
+    $topics = file_exists($file) ? unserialize(file_get_contents($file)) : array();
+    if (!$read) {
+        $topics[$id] = $utopics;
+        return file_put_contents($file, serialize($topics)) ? true : false;
+    }
+    if (array_key_exists((int)$id, $topics)) {
+        return $topics[(int)$id];
+    }
+    return 0;
+}
+
+function forummods(bool $forced = false): array
+{
+    global $INSTALLER09;
+    $file = $INSTALLER09['cache'] . '/forummods.txt';
+    if (!file_exists($file) || $forced === true) {
+        $users = array();
+        $forums = array();
+        $q = sql_query("SELECT id, username, forums_mod FROM users WHERE forum_mod = 'yes'");
+        while ($a = mysqli_fetch_assoc($q)) {
+            $users[] = $a;
+        }
+        foreach ($users as $user) {
+            $reg = '([0-9]+)';
+            preg_match_all($reg, $user['forums_mod'], $fids);
+            foreach ($fids[0] as $fid) {
+                if (!array_key_exists($fid, $forums)) {
+                    $forums[$fid] = array();
+                }
+                $forums[$fid][] = array($user['id'], $user['username']);
+            }
+        }
+        file_put_contents($file, serialize($forums));
+    }
+    if (!file_exists($file)) {
+        return array();
+    }
+    $cached = unserialize(file_get_contents($file));
+    return is_array($cached) ? $cached : array();
 }
 /** end functions **/
 ?>

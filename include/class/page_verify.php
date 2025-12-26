@@ -35,8 +35,8 @@ class page_verify
     }
     function create($task_name = 'Default')
     {
-        global $CURUSER, $_SESSION;
-        $session_task = isset($CURUSER['id']) ? $CURUSER['id'] : $INSTALLER09['bot_id'];
+        global $CURUSER, $INSTALLER09, $_SESSION;
+        $session_task = isset($CURUSER['id']) ? $CURUSER['id'] : (isset($INSTALLER09['bot_id']) ? $INSTALLER09['bot_id'] : 0);
         $_SESSION['Task_Time'] = TIME_NOW;
         $_SESSION['Task'] = md5('user_id:'.$session_task.'::taskname-'.$task_name.'::'.$_SESSION['Task_Time']);
         $_SESSION['HTTP_USER_AGENT'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';

@@ -21,7 +21,7 @@ require_once(INCL_DIR . 'user_functions.php');
 require_once(CLASS_DIR . 'page_verify.php');
 require_once(CLASS_DIR . 'class.bencdec.php');
 require_once INCL_DIR . 'function_ircbot.php';
-require_once INCL_DIR . 'function_memcache.php';
+require_once INCL_DIR . 'function_cache.php';
 dbconn();
 loggedinorreturn();
 ini_set('upload_max_filesize', $INSTALLER09['max_torrent_size']);

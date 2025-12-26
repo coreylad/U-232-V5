@@ -33,7 +33,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 }
 require_once (INCL_DIR . 'user_functions.php');
 require_once (INCL_DIR . 'pager_functions.php');
-require_once (INCL_DIR . 'function_memcache.php');
+require_once (INCL_DIR . 'function_cache.php');
 require_once (CLASS_DIR . 'class_check.php');
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);

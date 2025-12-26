@@ -37,10 +37,10 @@ require_once("xml2array.php");
 				$search = "/moviename-".urlencode($name);
 			if(isset($searchby) && $searchby == "imdb")
 			{
-				if(!ereg("[0-9]{7}", $name, $imdbid))
+				if(!preg_match("/[0-9]{7}/", $name, $imdbid))
 					die("Can't find imdb id");
-						else
-				$search = "/imdbid-".$imdbid[0];
+				else
+					$search = "/imdbid-".$imdbid[0];
 			}
 			$link = "http://www.opensubtitles.org/en/search".$search.$optional."/simplexml";
 			

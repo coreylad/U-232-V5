@@ -35,7 +35,6 @@ require_once (CACHE_DIR . 'class_config.php');
 require_once (CACHE_DIR . 'hit_and_run_settings.php');
 date_default_timezone_set('Europe/London');
 $mc1 = NEW CACHE();
-//$mc1->MemcachePrefix = 'u232_3_';
 define('TIME_NOW', time());
 define('ANN_SQL_DEBUG', 1);
 define('ANN_SQL_LOGGING', 0);

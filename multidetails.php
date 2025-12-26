@@ -54,7 +54,7 @@ $HTMLOUT = $torrent_cache = '';
 if (!isset($_GET['id']) || !is_array($_GET['id'])) stderr("{$lang['details_user_error']}", "{$lang['details_bad_id']}");
 
 
-//==pdq memcache slots
+//==pdq cache slots
 $slot = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) foreach ($slot as $sl) {

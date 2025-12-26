@@ -157,7 +157,7 @@ if (isset($cleansearchstr)) {
         $orderby = 'ORDER BY id DESC';
         $searcha = explode(' ', $cleansearchstr);
         
-        //==Memcache search cloud by putyn
+        //==Redis search cloud by putyn
         searchcloud_insert($cleansearchstr);
         
         //==

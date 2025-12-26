@@ -68,16 +68,16 @@ function permissioncheck()
 
 
     $out .= '<fieldset><legend>Module check</legend>';
-    $memcached_loaded = true;
-    if (!extension_loaded('memcached')) {
-        $continue = $memcached_loaded = false;
-        $out .= '<div class="notreadable">memcached</div>';
+    $redis_loaded = true;
+    if (!extension_loaded('redis')) {
+        $continue = $redis_loaded = false;
+        $out .= '<div class="notreadable">redis</div>';
     } else {
-        $out .= '<div class="readable">memcached</div>';
+        $out .= '<div class="readable">redis</div>';
     }
 
-    if( !$memcached_loaded ) {
-        $out .= '<div class="info">The memcached module for PHP is not installed and is required for u232<br/>' .
+    if( !$redis_loaded ) {
+        $out .= '<div class="info">The redis module for PHP is not installed and is required for u232<br/>' .
             '<input type="button" value="Reload" onclick="window.location.reload()"/>'.
             '</div>';
     }

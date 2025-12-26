@@ -72,7 +72,7 @@ function uptime()
         $shown = false;
         $uptime = substr($uptime, 0, strpos($uptime, " "));
         $res = "";
-        while (list($k, $v) = each($mults)) {
+        foreach ($mults as $k => $v) {
             $nmbr = floor($uptime / $n);
             $uptime-= ($nmbr * $n);
             $n = $n / $k;

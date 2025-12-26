@@ -70,10 +70,15 @@ $HTMLOUT.="<div class='panel panel-default'>
 	<div class='panel-body'>
 ";
 //$mc1->delete_value('top5_tor_');
-if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
+$top5torrents = $mc1->get_value('top5_tor_');
+if ($top5torrents === false || !is_array($top5torrents)) {
+    $top5torrents = array();
     $res = sql_query("SELECT id, seeders, poster, leechers, name, category from torrents ORDER BY seeders + leechers DESC LIMIT {$INSTALLER09['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
     while ($top5torrent = mysqli_fetch_assoc($res)) $top5torrents[] = $top5torrent;
     $mc1->cache_value('top5_tor_', $top5torrents, $INSTALLER09['expires']['top5_torrents']);
+}
+if (!is_array($top5torrents)) {
+    $top5torrents = array();
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT.= "<div class='module'><div class='tbadge tbadge-top'></div>
@@ -109,11 +114,16 @@ if ($top5torrents) {
 }
 //==Last 5 begin
 //$mc1->delete_value('last5_tor_');
-if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
+$last5torrents = $mc1->get_value('last5_tor_');
+if ($last5torrents === false || !is_array($last5torrents)) {
+    $last5torrents = array();
     $sql = "SELECT id, seeders, poster, leechers, name, category FROM torrents WHERE visible='yes' ORDER BY added DESC LIMIT {$INSTALLER09['latest_torrents_limit']}";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     while ($last5torrent = mysqli_fetch_assoc($result)) $last5torrents[] = $last5torrent;
     $mc1->cache_value('last5_tor_', $last5torrents, $INSTALLER09['expires']['last5_torrents']);
+}
+if (!is_array($last5torrents)) {
+    $last5torrents = array();
 }
 if (count($last5torrents) > 0) {
     $HTMLOUT.= "<div class='module'><div class='tbadge tbadge-new'></div>

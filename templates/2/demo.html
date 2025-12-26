@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Theme Demo - U-232 V5</title>
+    <link rel="stylesheet" href="1.css">
+    <link rel="stylesheet" href="css/cyberpunk-enhancements.css">
+    <style>
+        .demo-section {
+            margin: 40px 0;
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles Background -->
+    <div class="particle-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header style="text-align: center; padding: 60px 0 40px;">
+            <h1 class="holographic" style="font-size: 3.5em; margin-bottom: 10px;">
+                CYBERPUNK NEON THEME
+            </h1>
+            <p class="neon-text-cyan" style="font-size: 1.5em; letter-spacing: 3px;">
+                U-232 V5 Ultra Modern Edition
+            </p>
+        </header>
+
+        <div class="neon-divider"></div>
+
+        <!-- Navigation Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Navigation</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Browse</a></li>
+                    <li><a href="#">Upload</a></li>
+                    <li><a href="#">Forums</a></li>
+                    <li><a href="#">Stats</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Cards Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Cyberpunk Cards</h2>
+            <div class="demo-grid">
+                <div class="cyber-card scanlines">
+                    <div class="cyber-card-header">Featured Torrent</div>
+                    <p><strong>Name:</strong> Cyberpunk.2077.REPACK</p>
+                    <p><strong>Size:</strong> 57.2 GB</p>
+                    <p><strong>Seeders:</strong> <span class="text-green">1,234</span></p>
+                    <p><strong>Leechers:</strong> <span class="text-pink">56</span></p>
+                    <button class="btn-cyber-primary mt-10">Download</button>
+                </div>
+
+                <div class="cyber-card circuit-board">
+                    <div class="cyber-card-header">Server Stats</div>
+                    <p><strong>Users Online:</strong> <span class="neon-text-cyan">3,456</span></p>
+                    <p><strong>Total Torrents:</strong> <span class="neon-text-magenta">89,234</span></p>
+                    <p><strong>Total Peers:</strong> <span class="neon-text-green">12,567</span></p>
+                    <div class="digital-display mt-20" style="font-size: 1.2em;">
+                        99.9% UPTIME
+                    </div>
+                </div>
+
+                <div class="cyber-card hex-grid">
+                    <div class="cyber-card-header">User Profile</div>
+                    <p><strong>Username:</strong> <span class="holographic">NeonRunner</span></p>
+                    <p><strong>Class:</strong> <span class="badge">Power User</span></p>
+                    <p><strong>Ratio:</strong> <span class="text-green">3.45</span></p>
+                    <p><strong>Uploaded:</strong> 2.5 TB</p>
+                    <p><strong>Downloaded:</strong> 745 GB</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Panels Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Panels & Tables</h2>
+            <div class="panel">
+                <div class="panel-heading">Latest Uploads</div>
+                <div class="panel-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Seeds</th>
+                                <th>Peers</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cyberpunk.Movie.2025.4K.HDR</td>
+                                <td>45.2 GB</td>
+                                <td class="text-green">234</td>
+                                <td>12</td>
+                                <td><span class="badge badge-hot">HOT</span></td>
+                            </tr>
+                            <tr>
+                                <td>Synthwave.Music.Collection.FLAC</td>
+                                <td>8.7 GB</td>
+                                <td class="text-green">89</td>
+                                <td>3</td>
+                                <td><span class="badge badge-new">NEW</span></td>
+                            </tr>
+                            <tr>
+                                <td>Neon.Game.Complete.Edition</td>
+                                <td>67.3 GB</td>
+                                <td class="text-green">567</td>
+                                <td>45</td>
+                                <td><span class="badge badge-free">FREE</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Buttons Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Neon Buttons</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0;">
+                <button class="btn">Default Button</button>
+                <button class="btn-primary">Primary Button</button>
+                <button class="btn-cyber-primary">Cyber Primary</button>
+                <button class="btn-cyber-success">Cyber Success</button>
+                <button class="btn-cyber-danger">Cyber Danger</button>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Progress Bars Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Energy & Progress Bars</h2>
+            <div style="max-width: 800px;">
+                <p><strong>Upload Progress:</strong></p>
+                <div class="progress mb-20">
+                    <div class="progress-bar" style="width: 75%;"></div>
+                </div>
+
+                <p><strong>Download Speed:</strong></p>
+                <div class="energy-bar mb-20">
+                    <div class="energy-fill" style="width: 60%;"></div>
+                </div>
+
+                <p><strong>Seeding Activity:</strong></p>
+                <div class="progress mb-20">
+                    <div class="progress-bar" style="width: 90%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Alerts Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Alert Messages</h2>
+            <div class="alert alert-success">
+                <strong>Success!</strong> Your torrent has been uploaded successfully.
+            </div>
+            <div class="alert alert-info">
+                <strong>Info:</strong> New features have been added to the site.
+            </div>
+            <div class="alert alert-warning">
+                <strong>Warning:</strong> Your ratio is below the required minimum.
+            </div>
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Failed to connect to the tracker.
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Forms Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Form Elements</h2>
+            <div class="panel" style="max-width: 600px;">
+                <div class="panel-heading">Login Portal</div>
+                <div class="panel-body">
+                    <form>
+                        <div class="mb-20">
+                            <label for="username" style="display: block; margin-bottom: 5px;">Username:</label>
+                            <input type="text" id="username" placeholder="Enter username..." style="width: 100%;">
+                        </div>
+                        <div class="mb-20">
+                            <label for="password" style="display: block; margin-bottom: 5px;">Password:</label>
+                            <input type="password" id="password" placeholder="Enter password..." style="width: 100%;">
+                        </div>
+                        <div class="mb-20">
+                            <label for="remember" style="display: inline-flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" id="remember" style="width: auto; margin-right: 10px;">
+                                Remember me
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-cyber-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Text Effects Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Text Effects</h2>
+            <div class="demo-grid">
+                <div class="cyber-card">
+                    <h3 class="neon-text-cyan">Neon Cyan Text</h3>
+                    <p>Standard glowing cyan text effect</p>
+                </div>
+                <div class="cyber-card">
+                    <h3 class="neon-text-magenta">Neon Magenta Text</h3>
+                    <p>Vibrant glowing magenta text</p>
+                </div>
+                <div class="cyber-card">
+                    <h3 class="neon-text-green">Neon Green Text</h3>
+                    <p>Electric glowing green text</p>
+                </div>
+                <div class="cyber-card">
+                    <h3 class="holographic">Holographic Text</h3>
+                    <p>Animated rainbow gradient text</p>
+                </div>
+                <div class="cyber-card">
+                    <h3 class="glitch" data-text="GLITCH EFFECT">GLITCH EFFECT</h3>
+                    <p>Cyberpunk glitch animation</p>
+                </div>
+                <div class="cyber-card">
+                    <h3 class="neon-pulse">Pulsing Neon</h3>
+                    <p>Animated pulsing glow effect</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Badges Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Status Badges</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0;">
+                <span class="badge">Default</span>
+                <span class="badge badge-hot">HOT</span>
+                <span class="badge badge-new">NEW</span>
+                <span class="badge badge-free">FREE</span>
+                <span class="badge" style="background: linear-gradient(135deg, #ff00ff, #9d00ff);">VIP</span>
+                <span class="badge" style="background: linear-gradient(135deg, #ffea00, #ff6b00);">PREMIUM</span>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Pagination Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Pagination</h2>
+            <div class="pager" style="justify-content: center; display: flex; flex-wrap: wrap; gap: 10px;">
+                <div class="td pager">« Previous</div>
+                <div class="td pager">1</div>
+                <div class="td highlight">2</div>
+                <div class="td pager">3</div>
+                <div class="td pager">4</div>
+                <div class="td pager">5</div>
+                <div class="td pager">Next »</div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Special Effects Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Special Effects</h2>
+            <div class="demo-grid">
+                <div class="neon-border-cyan" style="padding: 20px; text-align: center;">
+                    <h3>Neon Border Cyan</h3>
+                    <p>Glowing cyan border with pulse effect</p>
+                </div>
+                <div class="neon-border-magenta" style="padding: 20px; text-align: center;">
+                    <h3>Neon Border Magenta</h3>
+                    <p>Glowing magenta border with pulse effect</p>
+                </div>
+                <div class="cyber-card scanlines" style="height: 200px;">
+                    <h3>Scanlines Effect</h3>
+                    <p>Retro CRT monitor scanline overlay</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Digital Display Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-cyan">Digital Displays</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; margin: 30px 0;">
+                <div class="digital-display">23:45:12</div>
+                <div class="digital-display">2,567 USERS</div>
+                <div class="digital-display">99.9% UP</div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Shoutbox Demo -->
+        <div class="demo-section">
+            <h2 class="neon-text-magenta">Shoutbox</h2>
+            <div class="panel">
+                <div class="panel-heading">Site Shoutbox</div>
+                <div class="panel-body">
+                    <div class="shout-table">
+                        <div style="padding: 10px; border-bottom: 1px solid rgba(0,243,255,0.2);">
+                            <strong class="text-cyan">NeonRunner:</strong> This new theme is amazing! 🔥
+                        </div>
+                        <div style="padding: 10px; border-bottom: 1px solid rgba(0,243,255,0.2);">
+                            <strong class="text-magenta">CyberPunk99:</strong> Love the glowing effects!
+                        </div>
+                        <div style="padding: 10px; border-bottom: 1px solid rgba(0,243,255,0.2);">
+                            <strong class="text-green">MatrixKid:</strong> The animations are so smooth
+                        </div>
+                        <div style="padding: 10px; border-bottom: 1px solid rgba(0,243,255,0.2);">
+                            <strong class="text-pink">FuturisticAce:</strong> Best tracker theme ever!
+                        </div>
+                        <div style="padding: 10px;">
+                            <strong class="holographic">AdminBot:</strong> Welcome to the future of torrenting!
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <input type="text" placeholder="Type your message..." style="width: calc(100% - 120px); display: inline-block;">
+                        <button class="btn-cyber-primary" style="width: 100px; display: inline-block; margin-left: 10px;">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neon-divider"></div>
+
+        <!-- Footer -->
+        <footer style="margin-top: 60px; padding: 40px 0; text-align: center;">
+            <h3 class="holographic">CYBERPUNK THEME</h3>
+            <p style="margin: 20px 0;">Ultra Modern • Neon Glow • Futuristic Design</p>
+            <div style="margin: 20px 0;">
+                <a href="#" style="margin: 0 15px;">Home</a>
+                <a href="#" style="margin: 0 15px;">About</a>
+                <a href="#" style="margin: 0 15px;">Contact</a>
+                <a href="#" style="margin: 0 15px;">Privacy</a>
+            </div>
+            <p class="text-dim" style="margin-top: 30px;">
+                © 2025 U-232 V5 | Cyberpunk Neon Theme v1.0
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

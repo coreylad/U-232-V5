@@ -23,15 +23,13 @@ if ($INSTALLER09['error_reports']['debugmode'] == 1) {
 }else { 
     error_reporting(0); 
 }
-const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0';
+// Minimum PHP version requirement
+const REQUIRED_PHP = 80200, REQUIRED_PHP_VERSION = '8.2';
 if (PHP_VERSION_ID < REQUIRED_PHP)
 die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
 if (PHP_INT_SIZE < 8)
 die('A 64bit or higher OS + Processor is required.');
-if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quotes_sybase'))
-die('PHP is configured incorrectly. Turn off magic quotes.');
-if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode'))
-die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
+// Legacy ini flags removed in modern PHP; no checks required
 define('EMAIL_CONFIRM', true);
 define('SQL_DEBUG', 1);
 define('XBT_TRACKER', true);
@@ -68,7 +66,7 @@ $INSTALLER09['cookie_prefix'] = '#cookie_prefix'; // This allows you to have mul
 $INSTALLER09['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
 $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $INSTALLER09['domain'] = '#domain';
-//== Memcache expires
+//== Redis expires
 $INSTALLER09['expires']['latestuser'] = 0; // 0 = infinite
 $INSTALLER09['expires']['MyPeers_'] = 120; // 60 = 60 seconds
 $INSTALLER09['expires']['unread'] = 86400; // 86400 = 1 day
